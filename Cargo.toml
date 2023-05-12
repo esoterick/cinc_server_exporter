@@ -1,0 +1,16 @@
+[package]
+name = "cinc_server_exporter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+color-eyre = "0.6.2"
+chrono = "0.4.24"
+prometheus = "0.13.3"
+tokio = { version = "1", features = ["full"] }
+tokio-postgres = { version = "0.7.8", features = ["with-chrono-0_4"] }
+lazy_static = "^1.4"
+axum = "0.6.12"
+axum-prometheus = "0.3.3"
