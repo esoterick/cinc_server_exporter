@@ -1,13 +1,15 @@
-{ pkgs, ... }:
-
-{
-  env.GREET = "cinc_server_exporter";
-  packages = [ pkgs.git ];
-  scripts.hello.exec = "echo hello from $GREET";
+{pkgs, ...}: let
+  core =
+    if pkgs.stdenv.isDarwin
+    then [pkgs.darwin.apple_sdk.frameworks.CoreFoundation]
+    else [];
+in {
+  env.APP = "cinc_server_exporter";
+  packages = with pkgs; [git lolcat figlet] ++ core;
+  scripts.banner.exec = "echo $APP | figlet -w 100 -f doom | lolcat";
 
   enterShell = ''
-    hello
-    git --version
+    banner
   '';
 
   languages = {
