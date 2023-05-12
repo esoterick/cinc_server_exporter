@@ -4,7 +4,6 @@ use std::time::{ SystemTime, UNIX_EPOCH };
 use std::sync::Arc;
 
 use axum::Router;
-use axum::body::Bytes;
 use axum::extract::State;
 use axum::routing::get;
 use axum_prometheus::PrometheusMetricLayer;
