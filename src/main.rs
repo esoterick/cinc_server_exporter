@@ -1,18 +1,18 @@
 use std::net::SocketAddr;
-use std::{ time::Duration, env };
-use std::time::{ SystemTime, UNIX_EPOCH };
 use std::sync::Arc;
+use std::time::{SystemTime, UNIX_EPOCH};
+use std::{env, time::Duration};
 
-use axum::Router;
 use axum::extract::State;
 use axum::routing::get;
-use axum_prometheus::PrometheusMetricLayer;
+use axum::Router;
 use axum_prometheus::metrics_exporter_prometheus::PrometheusHandle;
-use color_eyre::{ eyre::Result };
-use prometheus::{ opts, Encoder, register_gauge_vec, GaugeVec, register_gauge, Gauge };
-use tokio::{ task, time };
-use tokio_postgres::{ NoTls, Client };
+use axum_prometheus::PrometheusMetricLayer;
+use color_eyre::eyre::Result;
 use lazy_static::lazy_static;
+use prometheus::{opts, register_gauge, register_gauge_vec, Encoder, Gauge, GaugeVec};
+use tokio::{task, time};
+use tokio_postgres::{Client, NoTls};
 
 /// This contains the handler to the Prometheus metrics that are generated for axum
 struct SharedState {
@@ -30,21 +30,24 @@ struct Node {
 }
 
 lazy_static! {
-    static ref LAST_CACHE_UPDATE: Gauge = register_gauge!(
-        opts!(
-            "cinc_server_exporter_last_updated",
-            "last time the cinc_server_exporter cache was updated"
-        )
-    ).unwrap();
-
+    static ref LAST_CACHE_UPDATE: Gauge = register_gauge!(opts!(
+        "cinc_server_exporter_last_updated",
+        "last time the cinc_server_exporter cache was updated"
+    ))
+    .unwrap();
     static ref LAST_UPDATED: GaugeVec = register_gauge_vec!(
-        opts!("cinc_server_node_last_updated", "last time the node was updated"),
+        opts!(
+            "cinc_server_node_last_updated",
+            "last time the node was updated"
+        ),
         &["node_name", "environment"]
-    ).unwrap();
-
-    static ref NODE_COUNT: Gauge = register_gauge!(
-        opts!("cinc_server_node_count", "count of the nodes registered to the cinc server")
-    ).unwrap();
+    )
+    .unwrap();
+    static ref NODE_COUNT: Gauge = register_gauge!(opts!(
+        "cinc_server_node_count",
+        "count of the nodes registered to the cinc server"
+    ))
+    .unwrap();
 }
 
 /// Main entrypoint...
@@ -63,12 +66,10 @@ async fn main() -> Result<()> {
         .with_state(shared_state)
         .layer(prometheus_layer);
 
-    let connection_string: String = env
-        ::var("CINC_SERVER_EXPORTER_CONN_STRING")
+    let connection_string: String = env::var("CINC_SERVER_EXPORTER_CONN_STRING")
         .unwrap_or("host=localhost user=opscode-pgsql dbname=opscode_chef".to_string());
 
-    let interval: u64 = env
-        ::var("CINC_SERVER_EXPORTER_INTERVAL")
+    let interval: u64 = env::var("CINC_SERVER_EXPORTER_INTERVAL")
         .unwrap_or("15".to_string())
         .parse::<u64>()?;
 
@@ -89,9 +90,9 @@ async fn main() -> Result<()> {
                 // Handle Node Updates
                 let nodes = gather_node_data(&client).await.unwrap();
                 for node in nodes {
-                    LAST_UPDATED.with_label_values(
-                        &[node.name.as_str(), node.environment.as_str()]
-                    ).set(node.updated_at.timestamp() as f64);
+                    LAST_UPDATED
+                        .with_label_values(&[node.name.as_str(), node.environment.as_str()])
+                        .set(node.updated_at.timestamp() as f64);
                 }
 
                 // Handle Node Count
@@ -110,7 +111,10 @@ async fn main() -> Result<()> {
     forever.await?;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 9165));
-    axum::Server::bind(&addr).serve(app.into_make_service()).await.unwrap();
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
 
     Ok(())
 }
@@ -119,10 +123,13 @@ async fn main() -> Result<()> {
 async fn gather_node_data(client: &Client) -> Result<Vec<Node>> {
     let mut nodes: Vec<Node> = vec![];
 
-    for row in client.query(
-        "select id, name, environment, created_at, updated_at from nodes;",
-        &[]
-    ).await? {
+    for row in client
+        .query(
+            "select id, name, environment, created_at, updated_at from nodes;",
+            &[],
+        )
+        .await?
+    {
         nodes.push(Node {
             _id: row.get(0),
             name: row.get(1),
