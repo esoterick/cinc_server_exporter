@@ -37,8 +37,13 @@
     <li>
       <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#development-setup">Development Setup</a>
+            <ul>
+                <li><a href="#recommended-prerequesites">Recommended prerequesites</a></li>
+                <li><a href="#building-and-running">Building and running</a></li>
+            </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -84,13 +89,13 @@ This project assumes you have cinc-server installed with the default database se
 
 ### Development Setup
 
-#### Recommended pre-requesites
+#### Recommended prerequesites
 
 - nix
 - devenv.sh
 - direnv
 
-####
+#### Building and running
 
 1. Pull latest code
    ```sh
