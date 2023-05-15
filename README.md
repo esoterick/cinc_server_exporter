@@ -71,10 +71,13 @@ This project assumes you have cinc-server installed with the default database se
 
 ### Installation
 
-1. sudo su - opscode-pgsql
+1. Switch to the database user
+   ```sh
+   sudo su - opscode-pgsql
+   ```
 2. pull latest release
    ```sh
-   wget ...
+   wget # automated builds/releases coming soon
    ```
 3. run the service
    ```sh
@@ -132,9 +135,10 @@ This project assumes you have cinc-server installed with the default database se
 
 ## Usage
 
-There are a handful of options to configure the exporter.
+There are a handful of options to configure the exporter which is done via the following environment variables.
 
-- asd
+- CINC_SERVER_EXPORTER_CONN_STRING - Postgres connection string to the CINC database
+- CINC_SERVER_EXPORTER_INTERVAL - Interval to scrape the database in seconds
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -146,6 +150,8 @@ There are a handful of options to configure the exporter.
 - [ ] Add test data
 - [ ] Add tests
 - [ ] Document configuration options
+- [ ] Add automated builds
+- [ ] Add release url to docs
 
 See the [open issues](https://github.com/esoterick/cinc_server_exporter/issues) for a full list of proposed features (and known issues).
 
