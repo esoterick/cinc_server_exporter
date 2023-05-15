@@ -1,7 +1,13 @@
 [package]
 name = "cinc_server_exporter"
+description = "A prometheus exporter for CINC Server and CINC compatible configuration management solutions."
 version = "0.1.0"
 edition = "2021"
+authors = ["Robert J. Lambert III <robert.j.lambert@pm.me>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/esoterick/cinc_server_exporter"
+rust-version = "1.71"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
