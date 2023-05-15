@@ -1,3 +1,5 @@
+#![warn(missing_docs)]
+
 use std::net::SocketAddr;
 use std::{ time::Duration, env };
 use std::time::{ SystemTime, UNIX_EPOCH };
