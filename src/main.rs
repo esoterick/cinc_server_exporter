@@ -1,5 +1,3 @@
-#![warn(missing_docs)]
-
 use std::net::SocketAddr;
 use std::{ time::Duration, env };
 use std::time::{ SystemTime, UNIX_EPOCH };
@@ -16,10 +14,12 @@ use tokio::{ task, time };
 use tokio_postgres::{ NoTls, Client };
 use lazy_static::lazy_static;
 
+/// This contains the handler to the Prometheus metrics that are generated for axum
 struct SharedState {
     metric_handle: PrometheusHandle,
 }
 
+/// Represents our CINC Node object
 #[derive(Debug)]
 struct Node {
     _id: String,
@@ -47,6 +47,7 @@ lazy_static! {
     ).unwrap();
 }
 
+/// Main entrypoint...
 #[tokio::main]
 async fn main() -> Result<()> {
     color_eyre::install()?;
@@ -114,6 +115,7 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
+/// Queries the database and returns a Vec of Node objects
 async fn gather_node_data(client: &Client) -> Result<Vec<Node>> {
     let mut nodes: Vec<Node> = vec![];
 
@@ -133,6 +135,7 @@ async fn gather_node_data(client: &Client) -> Result<Vec<Node>> {
     Ok(nodes)
 }
 
+/// Queries the database and returns the node count of the server
 async fn gather_node_count(client: &Client) -> Result<i64> {
     let rows = &client.query("select count(*) from nodes;", &[]).await?[0];
     let count: i64 = rows.get("count");
@@ -140,10 +143,12 @@ async fn gather_node_count(client: &Client) -> Result<i64> {
     Ok(count)
 }
 
+/// http / handler
 async fn root() -> &'static str {
     "Check out /metrics bud..."
 }
 
+/// http /metrics handler
 async fn metrics(State(state): State<Arc<SharedState>>) -> String {
     // Pull all our cinc metrics from prometheus
     let mut buffer = Vec::new();
