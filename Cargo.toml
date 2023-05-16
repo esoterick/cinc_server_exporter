@@ -7,7 +7,10 @@ authors = ["Robert J. Lambert III <robert.j.lambert@pm.me>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/esoterick/cinc_server_exporter"
-rust-version = "1.71"
+rust-version = "1.69"
+documentation = "https://docs.rs/crate/cinc_server_exporter/"
+keywords = ["cinc", "chef", "prometheus", "exporter", "metrics"]
+categories = ["config"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
