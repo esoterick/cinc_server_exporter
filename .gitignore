@@ -10,7 +10,8 @@ devenv.local.nix
 /direnv.test
 /dist
 /test/config
-/test/data
+/test/data/*.sql
+!/test/data/nodes.sql
 /test/scenarios/inherited/.envrc
 
 # Rust
