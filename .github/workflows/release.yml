@@ -1,0 +1,24 @@
+name: Publish Release
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v20
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: nix build
+      - run: nix flake check
+
+        # - uses: actions/checkout@v3
+        # - name: Create a Release
+        #   uses: elgohr/Github-Release-Action@v4
+        #   env:
+        #     GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        #   with:
+        #     title: MyReleaseMessage
