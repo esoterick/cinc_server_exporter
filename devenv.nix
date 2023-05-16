@@ -5,18 +5,31 @@
     else [];
 in {
   env.APP = "cinc_server_exporter";
-  packages = with pkgs; [git lolcat figlet] ++ core;
   scripts.banner.exec = "echo $APP | figlet -w 100 -f doom | lolcat";
 
   enterShell = ''
     banner
   '';
 
+  packages = with pkgs;
+    [
+      git
+      lolcat
+      figlet
+    ]
+    ++ core;
+
+  services = {
+    postgres = {
+      enable = true;
+    };
+  };
+
   languages = {
     nix.enable = true;
     rust = {
       enable = true;
-      version = "latest";
+      version = "stable";
     };
   };
 
@@ -25,5 +38,6 @@ in {
     shellcheck.enable = true;
     clippy.enable = true;
     rustfmt.enable = true;
+    alejandra.enable = true;
   };
 }
