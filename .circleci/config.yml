@@ -1,0 +1,26 @@
+version: 2.1
+
+orbs:
+  rust: circleci/rust@1.6.0
+  github-cli: circleci/github-cli@2.2.0
+
+jobs:
+  release:
+    docker:
+      - image: cimg/rust:1.69.0
+    steps:
+      - checkout
+      - github-cli/install
+      - run: cargo --version
+      - run: cargo build --release
+      - run: tar czvf ./target/release/cinc_server_exporter.tar.gz ./target/release/cinc_server_exporter
+      - run: gh release create -R esoterick/cinc_server_exporter -n "yay release" "v0.1.0" ./target/release/cinc_server_exporter.tar.gz 
+
+workflows:
+  release-workflow:
+    jobs:
+      - release:
+          filters:
+            branches:
+              only:
+                - main
