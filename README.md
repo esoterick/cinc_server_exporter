@@ -47,7 +47,12 @@
         </li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#configuration">Configuration</a></li>
+        <li><a href="#available-metrics">Available Metrics</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
@@ -102,30 +107,56 @@ This project assumes you have cinc-server installed with the default database se
 #### Building and running
 
 1. Pull latest code
+
    ```sh
    git clone https://github.com/esoterick/cinc_server_exporter.git
    ```
+
 2. Enter project directory
+
    ```sh
    cd cinc_server_exporter
    ```
+
 3. Allow direnv and let nix to do it's thing
+
    ```sh
+   devenv init
+   ```
+
+4. Update .envrc with any configuration options, most importantly the host= string should be set to the current working directory of the repo plus `.devenv/state/postgres` which is the default location of where devenv stores the test postgres instance data.
+
+   ```
+   export CINC_SERVER_EXPORTER_CONN_STRING="host=$(pwd)/.devenv/state/postgres user=rlambert dbname=opscode_chef"
+   export CINC_SERVER_EXPORTER_INTERVAL="15"
+   ```
+
+5. Allow updated direnv
+
+   ```
    direnv allow .
    ```
-4. Run test database
+
+6. Run test database
+
    ```
    devenv up
    ```
-5. Import Test Data
+
+7. Import Test Data
+
    ```sh
-   # coming soon :(
+   createdb opscode_chef
+   psql -U rlambert -d opscode_chef -f test/data/nodes.sql
    ```
-6. Run exporter
+
+8. Run exporter
+
    ```sh
    cargo run
    ```
-7. Scrape
+
+9. Scrape
    ```sh
    curl http://localhost:9165/metrics
    ```
@@ -136,21 +167,47 @@ This project assumes you have cinc-server installed with the default database se
 
 ## Usage
 
+### Configuration
+
 There are a handful of options to configure the exporter which is done via the following environment variables.
 
-- CINC_SERVER_EXPORTER_CONN_STRING - Postgres connection string to the CINC database
-- CINC_SERVER_EXPORTER_INTERVAL - Interval to scrape the database in seconds
+- `CINC_SERVER_EXPORTER_CONN_STRING` - Postgres connection string to the CINC database. default: `host=localhost user=opscode-pgsql dbname=opscode_chef`
+- `CINC_SERVER_EXPORTER_INTERVAL` - Interval to scrape the database in seconds. default: `15`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 
+### Available Metrics
+
+Current list of available exported metrics
+
+**Exporter Level**
+
+- `cinc_server_exporter_last_updated` - THe UNIX timestamp of the last cache update for the cinc_server_exporter
+
+**Server Level**
+
+- `cinc_server_node_count` - The count of all the nodes stored on the cinc_server
+
+**Node Level**
+
+- `cinc_server_node_last_updated` - Per node, the UNIX timestamp of the last node update
+
+**Axum**
+
+- `axum_http_requests_duration_seconds_bucket`
+- `axum_http_requests_duration_seconds_count`
+- `axum_http_requests_duration_seconds_sum`
+- `axum_http_requests_pending`
+- `axum_http_requests_total`
+
 ## Roadmap
 
-- [ ] Add changelog
-- [ ] Add test data
+- [x] Add changelog
+- [x] Add test data
 - [ ] Add tests
-- [ ] Document configuration options
+- [x] Document configuration options
 - [ ] Add automated builds
 - [ ] Add release url to docs
 
