@@ -20,4 +20,5 @@ jobs:
       - name: Install devenv.sh
         run: nix profile install github:cachix/devenv/latest
         shell: sh
+      - run: devenv shell cargo build --release
       - run: devenv shell pre-commit run -a
