@@ -5,20 +5,23 @@ on:
       - "v*"
   workflow_dispatch:
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
+      - uses: cachix/cachix-action@v12
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: nix build
-      - run: nix flake check
-
-        # - uses: actions/checkout@v3
-        # - name: Create a Release
-        #   uses: elgohr/Github-Release-Action@v4
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        #   with:
-        #     title: MyReleaseMessage
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install github:cachix/devenv/latest
+        shell: sh
+      - name: Build the release
+        run: devenv shell cargo build --release
+        shell: sh
+      - name: Create our tarball
+        run: |
+          ls -latrh target/release
