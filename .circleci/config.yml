@@ -27,6 +27,7 @@ jobs:
           command: |
             rustup update
             rustup install nightly
+            rustup install stable
             rustup default nightly
             rustup component add rustfmt
       - run:
@@ -49,9 +50,6 @@ jobs:
       - run:
           name: Test
           command: rustup run stable cargo test
-      - run:
-          name: Upload Coverage
-          command: ./scripts/codecov.sh
       - save_cache:
           key: project-cache
           paths:
