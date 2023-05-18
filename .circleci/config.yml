@@ -14,7 +14,7 @@ jobs:
       - run: cargo --version
       - run: cargo build --release
       - run: tar czvf ./target/release/cinc_server_exporter.tar.gz ./target/release/cinc_server_exporter
-      - run: gh release create -R esoterick/cinc_server_exporter -n "yay release" "v0.1.0" ./target/release/cinc_server_exporter.tar.gz 
+      - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./target/release/cinc_server_exporter.tar.gz
 
 workflows:
   release-workflow:
