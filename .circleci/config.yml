@@ -15,6 +15,41 @@ jobs:
       - run: cargo build --release
       - run: tar czvf ./target/release/cinc_server_exporter.tar.gz ./target/release/cinc_server_exporter
       - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./target/release/cinc_server_exporter.tar.gz
+  build:
+    docker:
+      - image: rust:1.69-buster
+    steps:
+      - checkout
+      - restore_cache:
+          key: project-cache
+      - run:
+          name: Check formatting
+          command: |
+            rustfmt --version
+            cargo fmt -- --write-mode=diff
+      - run:
+          name: Nightly Build
+          command: |
+            rustup run nightly rustc --version --verbose
+            rustup run nightly cargo --version --verbose
+            rustup run nightly cargo build
+      - run:
+          name: Stable Build
+          command: |
+            rustup run stable rustc --version --verbose
+            rustup run stable cargo --version --verbose
+            rustup run stable cargo build
+      - run:
+          name: Test
+          command: rustup run stable cargo test
+      - run:
+          name: Upload Coverage
+          command: ./scripts/codecov.sh
+      - save_cache:
+          key: project-cache
+          paths:
+            - "~/.cargo"
+            - "./target"
 
 workflows:
   release-workflow:
@@ -23,3 +58,7 @@ workflows:
           filters:
             tags:
               only: /^v.*/
+      - build:
+          filters:
+            branches:
+              only: testing-release
