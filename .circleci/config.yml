@@ -23,6 +23,13 @@ jobs:
       - restore_cache:
           key: project-cache
       - run:
+          name: Install tools
+          command: |
+            rustup update
+            rustup install nightly
+            rustup component add rustfmt
+            rustup default nightly
+      - run:
           name: Check formatting
           command: |
             rustfmt --version
