@@ -1,11 +1,7 @@
 # Release Notes
 
-## [0.1.1] - 2023-03-18
+## [0.1.3] - 2023-03-18
 
-### Added
+### Fixed
 
 - CircleCI builds
-
-### Removed
-
-- Github Actions Builds
