@@ -21,6 +21,5 @@ workflows:
     jobs:
       - release:
           filters:
-            branches:
-              only:
-                - main
+            tags:
+              only: /^v.*/
