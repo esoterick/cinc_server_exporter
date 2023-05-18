@@ -27,8 +27,8 @@ jobs:
           command: |
             rustup update
             rustup install nightly
-            rustup component add rustfmt
             rustup default nightly
+            rustup component add rustfmt
       - run:
           name: Check formatting
           command: |
