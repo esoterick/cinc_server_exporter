@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache-x86_64-unknown-linux-musl-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Setup Environment Variables
           command: |
@@ -26,19 +26,19 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache-x86_64-unknown-linux-musl-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
       - run: apt update && apt install -y curl build-essential
       - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup.sh && chmod +x rustup.sh && ./rustup.sh -y
       - run:
           name: Setup Environment Variables
           command: |
+            echo 'export RUSTFLAGS="-C target-feature=+crt-static"' >> "$BASH_ENV"
             echo 'export DEBIAN_FRONTEND=noninteractive' >> "$BASH_ENV"
             echo 'source "$HOME/.cargo/env"' >> "$BASH_ENV"
       - run:
           name: Install tools
           command: |
             rustup update
-            rustup target add x86_64-unknown-linux-musl
             rustup install nightly
             rustup install stable
             rustup default nightly
@@ -59,12 +59,12 @@ jobs:
           command: |
             rustup run stable rustc --version --verbose
             rustup run stable cargo --version --verbose
-            rustup run stable cargo build  --release --target x86_64-unknown-linux-musl
+            rustup run stable cargo build  --release
       - run:
           name: Test
           command: rustup run stable cargo test
       - save_cache:
-          key: cache-x86_64-unknown-linux-musl-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
           paths:
             - "~/.cargo"
             - "./target"
