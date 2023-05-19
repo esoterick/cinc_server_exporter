@@ -22,6 +22,7 @@ jobs:
       - checkout
       - restore_cache:
           key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+      - run: apt update && apt install curl
       - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       - run:
           name: Install tools
