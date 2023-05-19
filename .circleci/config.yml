@@ -62,7 +62,7 @@ jobs:
             rustup run nightly cargo build  --release --target x86_64-unknown-linux-gnu
       - run:
           name: Test
-          command: rustup run stable cargo test
+          command: rustup run nightly cargo test --target x86_64-unknown-linux-gnu
       - save_cache:
           key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}-1
           paths:
