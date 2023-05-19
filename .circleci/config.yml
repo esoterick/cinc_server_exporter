@@ -38,6 +38,7 @@ jobs:
           name: Install tools
           command: |
             rustup update
+            rustup target add x86_64-unknown-linux-musl
             rustup install nightly
             rustup install stable
             rustup default nightly
@@ -58,7 +59,7 @@ jobs:
           command: |
             rustup run stable rustc --version --verbose
             rustup run stable cargo --version --verbose
-            rustup run stable cargo build  --release
+            rustup run stable cargo build  --release --target x86_64-unknown-linux-musl
       - run:
           name: Test
           command: rustup run stable cargo test
