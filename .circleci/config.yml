@@ -51,7 +51,7 @@ jobs:
           name: Test
           command: rustup run stable cargo test
       - save_cache:
-          key: project-cache
+          key: "build-release-$CIRCLE_TAG"
           paths:
             - "~/.cargo"
             - "./target"
