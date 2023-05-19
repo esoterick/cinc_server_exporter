@@ -13,8 +13,8 @@ jobs:
       - github-cli/install
       - restore_cache:
           key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
-      - run: pwd && ls -latrh && cd ./project/target/release/ && tar czvf cinc_server_exporter.tar.gz cinc_server_exporter
-      - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./project/target/release/cinc_server_exporter.tar.gz
+      - run: pwd && ls -latrh && cd ./target/release/ && pwd && ls -latrh && tar czvf cinc_server_exporter.tar.gz cinc_server_exporter
+      - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./target/release/cinc_server_exporter.tar.gz
   build:
     docker:
       - image: rust:1.69-buster
