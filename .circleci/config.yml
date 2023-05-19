@@ -55,7 +55,9 @@ jobs:
             cargo --version --verbose
             cargo build  --release --target x86_64-unknown-linux-gnu
       - github-cli/install
-      - run: pwd && ls -latrh && cd ./target/release/ && pwd && ls -latrh && tar czvf cinc_server_exporter.tar.gz cinc_server_exporter
+      - run: ls -latrh ./target
+      - run: ls -latrh ./target/release/
+      - run: tar czvf cinc_server_exporter.tar.gz cinc_server_exporter
       - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./target/release/cinc_server_exporter.tar.gz
       # - run:
       #     name: Test
