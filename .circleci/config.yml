@@ -12,6 +12,10 @@ jobs:
       - checkout
       - restore_cache:
           key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+      - run:
+          name: Setup Environment Variables
+          command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> "$BASH_ENV"
       - run: apt update && apt install -y curl build-essential git git-man less libbsd0 libcurl3-gnutls libedit2 liberror-perl libexpat1 libssl1.0.0 libx11-6 libx11-data libxau6 libxcb1 libxdmcp6 libxext6 libxmuu1 multiarch-support openssh-client xauth
       - github-cli/install
       - run: pwd && ls -latrh && cd ./target/release/ && pwd && ls -latrh && tar czvf cinc_server_exporter.tar.gz cinc_server_exporter
@@ -28,6 +32,7 @@ jobs:
       - run:
           name: Setup Environment Variables
           command: |
+            echo 'export DEBIAN_FRONTEND=noninteractive' >> "$BASH_ENV"
             echo 'source "$HOME/.cargo/env"' >> "$BASH_ENV"
       - run:
           name: Install tools
