@@ -7,7 +7,7 @@ orbs:
 jobs:
   release:
     docker:
-      - image: rust:1.69-buster
+      - image: ubuntu:bionic-20210930
     steps:
       - checkout
       - github-cli/install
@@ -17,11 +17,12 @@ jobs:
       - run: gh release create -R esoterick/cinc_server_exporter -F RELEASE.md "$CIRCLE_TAG" ./target/release/cinc_server_exporter.tar.gz
   build:
     docker:
-      - image: rust:1.69-buster
+      - image: ubuntu:bionic-20210930
     steps:
       - checkout
       - restore_cache:
           key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
+      - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       - run:
           name: Install tools
           command: |
