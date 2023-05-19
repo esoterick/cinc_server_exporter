@@ -57,9 +57,9 @@ jobs:
       - run:
           name: Stable Build
           command: |
-            rustup run stable rustc --version --verbose
-            rustup run stable cargo --version --verbose
-            rustup run stable cargo build  --release
+            rustup run nightly rustc --version --verbose
+            rustup run nightly cargo --version --verbose
+            rustup run nightly cargo build  --release
       - run:
           name: Test
           command: rustup run stable cargo test
