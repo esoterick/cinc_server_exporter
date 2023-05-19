@@ -11,7 +11,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}-1
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
       - run:
           name: Setup Environment Variables
           command: |
@@ -26,7 +26,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}-1
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
       - run: apt update && apt install -y curl build-essential
       - run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > rustup.sh && chmod +x rustup.sh && ./rustup.sh -y
       - run:
@@ -64,7 +64,7 @@ jobs:
           name: Test
           command: rustup run nightly cargo test --target x86_64-unknown-linux-gnu
       - save_cache:
-          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}-1
+          key: cache-{{ arch }}-{{ .Branch }}-{{ checksum "Cargo.lock" }}
           paths:
             - "~/.cargo"
             - "./target"
