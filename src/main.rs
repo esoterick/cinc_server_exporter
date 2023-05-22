@@ -1,4 +1,4 @@
-use std::net::SocketAddr;
+use std::net::{IpAddr, SocketAddr};
 use std::sync::Arc;
 use std::time::{SystemTime, UNIX_EPOCH};
 use std::{env, time::Duration};
@@ -66,6 +66,13 @@ async fn main() -> Result<()> {
         .with_state(shared_state)
         .layer(prometheus_layer);
 
+    let listen_addr: String =
+        env::var("CINC_SERVER_EXPORTER_LISTEN_ADDR").unwrap_or("0.0.0.0".to_string());
+
+    let listen_port: u16 = env::var("CINC_SERVER_EXPORTER_LISTEN_PORT")
+        .unwrap_or("9164".to_string())
+        .parse::<u16>()?;
+
     let connection_string: String = env::var("CINC_SERVER_EXPORTER_CONN_STRING")
         .unwrap_or("host=localhost user=opscode-pgsql dbname=opscode_chef".to_string());
 
@@ -110,7 +117,7 @@ async fn main() -> Result<()> {
 
     forever.await?;
 
-    let addr = SocketAddr::from(([0, 0, 0, 0], 9165));
+    let addr = SocketAddr::new(listen_addr.parse::<IpAddr>()?, listen_port);
     axum::Server::bind(&addr)
         .serve(app.into_make_service())
         .await
