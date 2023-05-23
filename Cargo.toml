@@ -11,6 +11,7 @@ rust-version = "1.69"
 documentation = "https://docs.rs/crate/cinc_server_exporter/"
 keywords = ["cinc", "chef", "prometheus", "exporter", "metrics"]
 categories = ["config"]
+include = ["src/*.rs", "Cargo.toml"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
