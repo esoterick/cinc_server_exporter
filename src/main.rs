@@ -5,7 +5,7 @@ use std::{env, time::Duration};
 
 use axum::extract::State;
 use axum::routing::get;
-use axum::Router;
+use axum::{Router, Server};
 use axum_prometheus::metrics_exporter_prometheus::PrometheusHandle;
 use axum_prometheus::PrometheusMetricLayer;
 use color_eyre::eyre::Result;
@@ -118,7 +118,7 @@ async fn main() -> Result<()> {
     forever.await?;
 
     let addr = SocketAddr::new(listen_addr.parse::<IpAddr>()?, listen_port);
-    axum::Server::bind(&addr)
+    Server::bind(&addr)
         .serve(app.into_make_service())
         .await
         .unwrap();

@@ -127,7 +127,7 @@ This project assumes you have cinc-server installed with the default database se
 4. Update .envrc with any configuration options, most importantly the host= string should be set to the current working directory of the repo plus `.devenv/state/postgres` which is the default location of where devenv stores the test postgres instance data.
 
    ```
-   export CINC_SERVER_EXPORTER_CONN_STRING="host=$(pwd)/.devenv/state/postgres user=rlambert dbname=opscode_chef"
+   export CINC_SERVER_EXPORTER_CONN_STRING="host=$(pwd)/.devenv/state/postgres user=esoterick dbname=opscode_chef"
    export CINC_SERVER_EXPORTER_INTERVAL="15"
    ```
 
@@ -158,7 +158,7 @@ This project assumes you have cinc-server installed with the default database se
 
 9. Scrape
    ```sh
-   curl http://localhost:9165/metrics
+   curl http://localhost:9164/metrics
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
