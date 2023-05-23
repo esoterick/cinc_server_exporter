@@ -72,11 +72,8 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              only: main
+            tags:
+              only: /^v.*/
       - release:
           requires:
             - build
-          filters:
-            tags:
-              only: /^v.*/
