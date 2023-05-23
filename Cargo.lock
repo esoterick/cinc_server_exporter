@@ -209,7 +209,7 @@ dependencies = [
 
 [[package]]
 name = "cinc_server_exporter"
-version = "0.1.0"
+version = "0.1.5"
 dependencies = [
  "axum",
  "axum-prometheus",

@@ -173,6 +173,8 @@ There are a handful of options to configure the exporter which is done via the f
 
 - `CINC_SERVER_EXPORTER_CONN_STRING` - Postgres connection string to the CINC database. default: `host=localhost user=opscode-pgsql dbname=opscode_chef`
 - `CINC_SERVER_EXPORTER_INTERVAL` - Interval to scrape the database in seconds. default: `15`
+- `CINC_SERVER_EXPORTER_LISTEN_ADDR` - Listen address for the exporter. default: `0.0.0.0`
+- `CINC_SERVER_EXPORTER_LISTEN_PORT` - Listen TCP port for the exporter. default: `9164`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

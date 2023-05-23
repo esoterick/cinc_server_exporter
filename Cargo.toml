@@ -1,7 +1,7 @@
 [package]
 name = "cinc_server_exporter"
 description = "A prometheus exporter for CINC Server and CINC compatible configuration management solutions."
-version = "0.1.0"
+version = "0.1.5"
 edition = "2021"
 authors = ["Robert J. Lambert III <robert.j.lambert@pm.me>"]
 license = "MIT"
