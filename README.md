@@ -272,5 +272,5 @@ Project Link: [https://github.com/esoterick/cinc_server_exporter](https://github
 [license-url]: https://github.com/esoterick/cinc_server_exporter/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/rlambert
-[crates-io]: https://img.shields.io/crates/dv/cinc_server_exporter/0.1.0?style=for-the-badge
+[crates-io]: https://img.shields.io/crates/dv/cinc_server_exporter/0.1.5?style=for-the-badge
 [crates-io-url]: https://crates.io/crates/cinc_server_exporter
